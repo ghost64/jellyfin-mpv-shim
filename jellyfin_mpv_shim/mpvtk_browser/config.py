@@ -177,7 +177,7 @@ TAB_SECTIONS = {
         # needs it cannot read anything else on this screen to find it, and
         # may well be reading it through a phone camera.
         (_("This Device"), ["lang", "player_name", "raise_mpv",
-                            "discord_presence",
+                            "discord_presence", "mpris",
                             "check_updates", "notify_updates"]),
         # A controller drives the *library* as much as playback -- it is the
         # couch input for the whole app, not a player control -- so it sits
@@ -217,6 +217,7 @@ TAB_SECTIONS = {
         (_("Library Browser"), ["library_image_cache_mb",
                                 "scroll_wheel_pixels",
                                 "scroll_mode", "paginated",
+                                "remember_filters",
                                 "grid_fill",
                                 "backdrop_full_width",
                                 "detail_poster",
@@ -367,6 +368,7 @@ RESTART_REQUIRED = frozenset({
     # `if settings.discord_presence:` at module scope in player.py -- an
     # import guard, so nothing short of a restart re-runs it.
     "discord_presence",
+    "mpris",
     # Handed to each JellyfinClient at construction; until then the servers
     # go on showing the old name.
     "player_name",
@@ -687,6 +689,7 @@ LABEL_OVERRIDES = {
     "thumbnail_enable": _("Enable Trickplay Thumbnails"),
     "trickplay_fast_mode": _("Load All Seek Previews at Once"),
     "discord_presence": _("Show What You're Watching in Discord"),
+    "mpris": _("Desktop Media Controls"),
     "ui_scale": _("Interface Scale"),
     "ui_text_scale": _("Text size"),
     "ui_text_min": _("Minimum Text Size"),
@@ -695,6 +698,7 @@ LABEL_OVERRIDES = {
     "backdrop_full_width": _("Full-Width Backdrops"),
     "clock_12h": _("12-Hour Clock"),
     "grid_fill": _("Grid Spacing"),
+    "remember_filters": _("Remember Library Filters"),
     "logo_legibility_live_tv": _("Make Live TV logos more legible"),
     "logo_legibility_library": _("Make library logos more legible"),
     # Named for what they do to the page, not for the module they belong
@@ -1028,6 +1032,9 @@ NOTES = {
     # settings/general.py raises it, and only for someone it is actually
     # broken for.
     "discord_presence": _("Discord Rich Presence."),
+    "mpris": _("Lets keyboard media keys, headset buttons, the lock screen "
+               "and desktop media widgets play, pause and skip, and shows "
+               "what is playing with its cover (MPRIS, Linux only)."),
     "audio_device": _("Leave this to Default unless setting up passthrough. "
                       "Note some audio servers like Pipewire don't like "
                       "passthrough and will need to be disabled for a card "
@@ -1041,6 +1048,10 @@ NOTES = {
                    "scrolling: each page is one screenful with First / "
                    "Previous / Next / Last controls and a page number you can "
                    "type into. Easier than precise scrolling on a trackpad."),
+    "remember_filters": _("Reopen each library with the filters it had "
+                          "last time (genre, unplayed, favorites and the "
+                          "rest), saved to your account on the server. Off, "
+                          "filters only last until you leave the library."),
     "logo_legibility_live_tv": _(
         "Channel logos are ink on a transparent background, drawn for the "
         "white page other clients put them on, so on a dark one the black ones"

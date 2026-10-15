@@ -478,6 +478,8 @@ You can use the config file to enable and disable features.
   - **Replaces `snapped_scrolling` and `force_scroll_snapping`, and is not migrated from either.** `snapped_scrolling: true` in an existing config is ignored (with a warning in the log) and you start on `continuous`. It was set when continuous scrolling was not on offer, so keeping it would hold exactly the people who wanted smooth scrolling on the workaround for not having it. Set `scroll_mode` to `row` if you want it back.
 - `paginated` - Page the library and music tile grids instead of scrolling them. Default: `false`
   - Each page is one screenful (no scrolling within a page), with a bottom bar for First / Previous / Next / Last and a page-number box you can type into. Adjacent pages are prefetched so paging is instant. Global — applies to every tile grid. The songs list and genre grids keep scrolling.
+- `remember_filters` - Reopen each library with the filters it had last time. Default: `true`
+  - Stored on the server for each library, so they follow your account to other devices running this app; Jellyfin Web does not read them. The A–Z letter is never kept. Off, filters last until you leave the library, and nothing is saved or restored — anything already stored is kept, unused, and comes back if you turn this on again. Applies straight away.
 - `logo_legibility_live_tv` - Back transparent **channel logos** with the light plate they were drawn for. Default: `true`
   - Channel logos arrive as ink on a transparent background, drawn for the white page every other client puts them on — so on a dark one the black ones vanish. On, they get a light plate, and the few whose own outline is white get a drop shadow so they still have an edge against it.
   - Off, they get the theme's card colour behind them and no shadows, which is what Jellyfin Web does.
@@ -728,6 +730,14 @@ You can use the config file to enable and disable features.
   - Was a `true`/`false` setting before 3.1.0. An existing `false` becomes
     `disabled`; an existing `true` becomes `default`, since nothing on disk
     distinguishes "never touched it" from "asked for it".
+- `mpris` - Publish playback over MPRIS on Linux, so keyboard media keys,
+  headset buttons, the lock screen and desktop media widgets control the
+  shim, and show the title, artist, album and cover of what is playing.
+  Next/previous follow the Jellyfin queue (or seek, with `media_key_seek`).
+  Default: `true`
+  - Also in Settings → General → This Device. Needs PyGObject (`python-gobject`
+    on most distributions); without it the setting does nothing. Takes effect
+    after a restart.
 - `discord_presence` - Enable Discord rich presence support. Default: `false`
   - Also in Settings → General → This Device. Needs the optional `pypresence` package
     (`pip install jellyfin-mpv-shim[discord]`) and takes effect after a
