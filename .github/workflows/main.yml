@@ -6,7 +6,6 @@ on:
       - master
       - main
       - working
-      - macos-build
 jobs:
   build-win64:
     runs-on: windows-latest
@@ -26,30 +25,7 @@ jobs:
       uses: robinraju/release-downloader@v1
       with:
         repository: 'shinchiro/mpv-winbuild-cmake'
-        # Pinned rather than `latest: true`, and the pin is load-bearing --
-        # but it is no longer held DOWN. It was stuck at 20260610 because
-        # every build from 20260808 on links vulkan-1.dll as a HARD import
-        # (twelve vk* symbols, delay-load directory empty), and the Vulkan
-        # loader is installed by the GPU driver rather than by Windows: on a
-        # machine without one, Windows refuses libmpv outright, the shim
-        # reads that as "no libmpv", falls back to the external backend,
-        # finds no mpv.exe to spawn, and dies before any UI exists. Still
-        # true of 20260828, measured.
-        #
-        # We ship a loader now (see "Build the Vulkan loader" below), which
-        # is what upstream mpv's own Windows builds do, so the import is
-        # satisfied and the pin can follow releases again. It has to: the
-        # fix for #687 -- SDR trickplay frames blown out over HDR video,
-        # because vo_gpu_next tagged every overlay-add bitmap with the
-        # video's colorspace -- is in mpv master only, and 20260828 is the
-        # first pinnable build that has it (mpv 182fa6ca49, the same commit
-        # the flatpak manifest pins).
-        #
-        # "Check what libmpv needs" still runs on every build, and now
-        # verifies that the loader is really beside the DLL rather than
-        # taking the allowance on trust -- so a build that stops shipping it
-        # fails here instead of on a user's machine.
-        tag: '20260828'
+        latest: true
         fileName: 'mpv-dev-x86_64-v3*.7z'
     - name: Install dependencies
       timeout-minutes: 15
@@ -141,9 +117,7 @@ jobs:
       uses: robinraju/release-downloader@v1
       with:
         repository: 'shinchiro/mpv-winbuild-cmake'
-        # Pinned, not held down -- we ship the Vulkan loader now; see
-        # build-win64 above.
-        tag: '20260828'
+        latest: true
         fileName: 'mpv-dev-x86_64-[0-9]*-git-*.7z'
     - name: Install dependencies
       timeout-minutes: 15
@@ -243,9 +217,7 @@ jobs:
       uses: robinraju/release-downloader@v1
       with:
         repository: 'shinchiro/mpv-winbuild-cmake'
-        # Pinned, not held down -- we ship the Vulkan loader now; see
-        # build-win64 above.
-        tag: '20260828'
+        latest: true
         fileName: 'mpv-dev-aarch64-*.7z'
     - name: Install dependencies
       timeout-minutes: 15
